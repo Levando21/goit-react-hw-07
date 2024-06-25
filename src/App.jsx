@@ -1,13 +1,12 @@
 /** @format */
 
 import { useSelector, useDispatch } from "react-redux";
-import { useId, useEffect } from "react";
+import { useEffect } from "react";
 import ContactForm from "./components/ContactForm";
 import ContactList from "./components/ContactList";
 import SearchBox from "./components/SearchBox";
-import { addContact, deleteContact } from "./redux/contactsSlice";
+import { addContact, deleteContact } from "./redux/contactsOps";
 import { setFilter } from "./redux/filtersSlice";
-import { v4 as uuidv4 } from "uuid";
 import { fetchContacts } from "./redux/contactsOps";
 import "./App.css";
 
@@ -15,7 +14,6 @@ function App() {
 	const contacts = useSelector((state) => state.contacts.items);
 	const filter = useSelector((state) => state.filters.name);
 	const dispatch = useDispatch();
-	const newId = useId();
 
 	useEffect(() => {
 		dispatch(fetchContacts());
@@ -28,7 +26,6 @@ function App() {
 	const handleSubmit = (values, { resetForm }) => {
 		dispatch(
 			addContact({
-				id: uuidv4(),
 				name: values.name,
 				number: values.number,
 			})
@@ -53,10 +50,7 @@ function App() {
 	return (
 		<>
 			<h1>Phonebook</h1>
-			<ContactForm
-				id={newId}
-				handleSubmit={handleSubmit}
-			/>
+			<ContactForm handleSubmit={handleSubmit} />
 			<SearchBox onChange={handleChange} />
 			<ContactList
 				contacts={filteredContacts}

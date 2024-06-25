@@ -1,14 +1,14 @@
 /** @format */
 
 import Contact from "./Contact";
-import { useSelector } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { selectFilteredContacts } from "../redux/contactsSlice";
-const ContactList = ({ contacts, onDelete }) => {
-	const filteredNames = useSelector((state) => state.selectFilteredContacts);
+const ContactList = ({ onDelete }) => {
+	const filteredNames = useSelector(selectFilteredContacts);
 	return (
 		<div>
 			<ul>
-				{contacts.map((contact) => (
+				{filteredNames.map((contact) => (
 					<Contact
 						key={contact.id}
 						contact={contact}
