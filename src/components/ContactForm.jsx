@@ -2,8 +2,12 @@
 
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { useDispatch } from "react-redux";
+import { addContact } from "../redux/contactsOps";
 
-const ContactForm = ({ id, handleSubmit }) => {
+const ContactForm = () => {
+	const dispatch = useDispatch();
+
 	const contactSchema = Yup.object().shape({
 		name: Yup.string()
 			.required("Name is required")
@@ -15,6 +19,11 @@ const ContactForm = ({ id, handleSubmit }) => {
 			.max(50, "Phone number must be at most 50 characters"),
 	});
 
+	const handleSubmit = (values, { resetForm }) => {
+		dispatch(addContact({ name: values.name, number: values.number }));
+		resetForm();
+	};
+
 	return (
 		<Formik
 			initialValues={{ name: "", number: "" }}
@@ -22,11 +31,11 @@ const ContactForm = ({ id, handleSubmit }) => {
 			validationSchema={contactSchema}>
 			<Form>
 				<div>
-					<label htmlFor={`${id}-name`}>Name</label>
+					<label htmlFor="name">Name</label>
 					<Field
 						type="text"
 						name="name"
-						id={`${id}-name`}
+						id="name"
 					/>
 					<ErrorMessage
 						name="name"
@@ -35,11 +44,11 @@ const ContactForm = ({ id, handleSubmit }) => {
 					/>
 				</div>
 				<div>
-					<label htmlFor={`${id}-phone`}>Phone</label>
+					<label htmlFor="phone">Phone</label>
 					<Field
 						type="tel"
 						name="number"
-						id={`${id}-phone`}
+						id="phone"
 					/>
 					<ErrorMessage
 						name="number"
